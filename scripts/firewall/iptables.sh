@@ -61,7 +61,7 @@ EOF
     	        }
     	    }
     	}else if(NF==3){
-    	    if ($3 !~ /^[0-9]+/){
+    	    if ($3 !~ /^[0-9_\.]+/){
     		    print_err(NR,FILENAME)
     	    }else if($3 ~ /^[0-9]+$/){
     		    if($2 ~ /[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/){
@@ -75,6 +75,14 @@ EOF
     		    }else{
     		        print "/sbin/iptables -t filter -A INPUT -i",$1,"-p",$2,"-m multiport --dport",$3,"-j ACCEPT"
     		    }
+    	    }else if($3 ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/){
+    	        if($1 !~ /eth[0-9]+/){
+    		        print_err(NR,FILENAME)
+    		    }else{
+    		        print "/sbin/iptables -t filter -A INPUT -i",$1,"-p",$2,"-s",$3,"-j ACCEPT"
+    		    }
+    	    }else{
+    	        print_err(NR,FILENAME)
     	    }
     	}else if(NF==2){
     	    if ($1 ~ /eth[0-9]+/){
@@ -83,7 +91,9 @@ EOF
     		    if ($2 ~ /^[0-9]+$/){
     		        print "/sbin/iptables -t filter -A INPUT -p",$1,"--dport",$2,"-j ACCEPT"
     		    }else if ($2 ~ /^[0-9]+-[0-9]+$/){
-    		            print "/sbin/iptables -t filter -A INPUT -p",$1,"-m multiport --dport",$2,"-j ACCEPT"
+    		        print "/sbin/iptables -t filter -A INPUT -p",$1,"-m multiport --dport",$2,"-j ACCEPT"
+    		    }else if($2 ~ /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/){
+    	            print "/sbin/iptables -t filter -A INPUT -p",$1,"-s",$2,"-j ACCEPT"
     		    }else{
     		        print_err(NR,FILENAME)
     		    }
