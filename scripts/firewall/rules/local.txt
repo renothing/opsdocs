@@ -1,0 +1,8 @@
+eth0:tcp:80
+eth0:tcp:90-100
+eth0:tcp:8.8.8.8:90
+eth0:tcp:10.0.0.0/16:91
+eth0:tcp:172.16.200.1
+eth0:icmp
+udp:53
+udp:10.0.0.0.1
