@@ -13,7 +13,7 @@ cat <<EOF
 	start      start all filter rules
 	reload     reload all filter rules
 	stop       close all filter rules
-	echo       display all filter rules without apply
+	echo       try run all rules without apply
 EOF
 exit 1
 }
