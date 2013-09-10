@@ -130,7 +130,7 @@ if  [ $# -ne 1 ];then
     Usage
 fi
 case $1 in
-    start)      check_ru;`fw_start`;;
+    start)      check_ru;fw_start;;
     reload)     fw_stop;fw_start;;
     stop)	fw_stop;;
     echo)	fw_start;;
