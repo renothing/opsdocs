@@ -4,8 +4,6 @@
 #=====config=====
 dir_r="rules"
 #=====config end=====
-#check uid
-#[[ `id -u` -ne 0 ]] && echo "please run it with root permission" && exit 1;
 #functions
 Usage(){
     echo "Usage:" 1>&2
@@ -18,6 +16,10 @@ cat <<EOF
 	echo       display all filter rules without apply
 EOF
 exit 1
+}
+#check uid
+check_uid(){
+    [[ `id -u` -ne 0 ]] && echo "please run it with root permission" && exit 1;
 }
 #read rules
 check_ru(){
@@ -130,9 +132,9 @@ if  [ $# -ne 1 ];then
     Usage
 fi
 case $1 in
-    start)      check_ru;fw_start;;
-    reload)     fw_stop;fw_start;;
-    stop)	fw_stop;;
+    start)      check_uid;check_ru;fw_start;;
+    reload)     check_uid;fw_stop;check_ru;fw_start;;
+    stop)	check_uid;fw_stop;;
     echo)	fw_start;;
     *)          Usage;;
 esac
