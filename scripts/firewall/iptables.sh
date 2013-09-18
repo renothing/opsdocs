@@ -122,7 +122,15 @@ fw_start(){
 }
 #
 fw_stop(){
-    add_default|bash
+    /sbin/iptables -t nat -F
+    /sbin/iptables -t nat -P PREROUTING ACCEPT
+    /sbin/iptables -t nat -P POSTROUTING ACCEPT
+    /sbin/iptables -t mangle -F
+    /sbin/iptables -t filter -F
+    #default rule
+    /sbin/iptables -t filter -P INPUT ACCEPT
+    /sbin/iptables -t filter -P FORWARD ACCEPT
+    /sbin/iptables -t filter -P OUTPUT ACCEPT
 }
 #get args
 if  [ $# -ne 1 ];then
@@ -130,8 +138,8 @@ if  [ $# -ne 1 ];then
 fi
 case $1 in
     start)      check_uid;check_ru;fw_start|bash;;
-    reload)     check_uid;check_ru;fw_stop;fw_start|bash;;
-    stop)	check_uid;fw_stop|bash;;
+    reload)     check_uid;check_ru;fw_start|bash;;
+    stop)	check_uid;fw_stop;;
     echo)	check_uid;check_ru;fw_start;;
     *)          Usage;;
 esac
